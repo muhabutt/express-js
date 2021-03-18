@@ -48,12 +48,23 @@ const _search = (queryString) => __awaiter(void 0, void 0, void 0, function* () 
        */
     return axios_1.default.all(axiosPromises)
         .then(axios_1.default.spread((...responses) => {
-        let mergedResponses = [];
+        const mergedResponses = [];
         if (typeof responses[0].data.data !== 'undefined' && responses[0].data.data.length > 0) {
-            mergedResponses = responses[0].data.data;
+            responses[0].data.data.forEach((item) => {
+                if (verifyObjectProp(item, 'id') && verifyObjectProp(item.short_description, 'fi')) {
+                    // es6 way of object destruction.
+                    const subSet = ((name, short_description, apiUrl) => ({ name, short_description, apiUrl }))(item.id, item.short_description.fi, 'Hel.fi');
+                    mergedResponses.push(subSet);
+                }
+            });
         }
         if (typeof responses[1].data.records !== 'undefined' && responses[1].data.records.length > 0) {
-            mergedResponses = mergedResponses.concat(responses[1].data.records);
+            responses[1].data.records.forEach((item) => {
+                if (verifyObjectProp(item, 'title') && verifyObjectProp(item, 'subjects')) {
+                    const subSet = ((name, short_description, apiUrl) => ({ name, short_description, apiUrl }))(item.title, item.subjects, 'Finna.fi');
+                    mergedResponses.push(subSet);
+                }
+            });
         }
         return {
             success: true,
@@ -83,4 +94,38 @@ const getPromise = (url, params) => __awaiter(void 0, void 0, void 0, function* 
         params
     });
 });
+/**
+ * Recursive function , for nested object property is not undefined or null
+ * @param object
+ * @param name
+ * @return {boolean}
+ */
+const verifyObjectProp = (object, name) => {
+    let bol = true;
+    const recursion = (object, current) => {
+        if (object) {
+            for (const key in object) {
+                if (key === name) {
+                    const value = object[key];
+                    if (value !== 'undefined') {
+                        if (value && typeof value === 'object') {
+                            recursion(value, name);
+                        }
+                        else {
+                            bol = true;
+                        }
+                    }
+                    else {
+                        bol = false;
+                    }
+                }
+            }
+        }
+        else {
+            bol = false;
+        }
+    };
+    recursion(object);
+    return bol;
+};
 //# sourceMappingURL=searchController.js.map

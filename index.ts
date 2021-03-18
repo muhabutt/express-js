@@ -6,12 +6,11 @@ const port = process.env.PORT || 3000
 
 // public index.html route
 app.get('/', function (req, res) {
-  // eslint-disable-next-line node/no-path-concat
-  res.sendFile(path.join(__dirname + '/public/index.html'))
+  res.sendFile(path.resolve('public/index.html'))
 })
 
 // serving public files
-app.use('/', express.static(path.join(__dirname, 'public')))
+app.use(express.static('public'))
 
 // api routes
 app.use('/api/v1', routes)

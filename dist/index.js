@@ -10,11 +10,10 @@ const app = express_1.default();
 const port = process.env.PORT || 3000;
 // public index.html route
 app.get('/', function (req, res) {
-    // eslint-disable-next-line node/no-path-concat
-    res.sendFile(path_1.default.join(__dirname + '/public/index.html'));
+    res.sendFile(path_1.default.resolve('public/index.html'));
 });
 // serving public files
-app.use('/', express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.use(express_1.default.static('public'));
 // api routes
 app.use('/api/v1', routes_1.default);
 app.listen(port);
