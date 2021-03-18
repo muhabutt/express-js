@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._handleSearch = void 0;
+exports._search = void 0;
 const urls_1 = require("../urls");
 const axios_1 = __importDefault(require("axios")); // axios
 /**
@@ -20,31 +20,45 @@ const axios_1 = __importDefault(require("axios")); // axios
  * @param queryString
  * @return Promise<RESPONSE>
  */
-const _handleSearch = (queryString) => __awaiter(void 0, void 0, void 0, function* () {
+const _search = (queryString) => __awaiter(void 0, void 0, void 0, function* () {
     let params = null;
     const axiosPromises = []; // will contain apis response data
-    urls_1.getUrls().map((url) => {
+    const URLs = urls_1.getUrls();
+    URLs.forEach((url) => {
+        // check url to set the parameters for calling the api.
         if (url.hel) {
             params = {
                 format: 'json',
                 q: queryString
             };
-            axiosPromises.push(getData(url.hel, params));
+            axiosPromises.push(getPromise(url.hel, params));
         }
         else if (url.fina) {
             params = {
                 lookfor: queryString
             };
-            axiosPromises.push(getData(url.fina, params));
+            axiosPromises.push(getPromise(url.fina, params));
         }
     });
-    //@todo create type for api responses
+    /**
+       * @todo create type for api responses
+       * call all the promises, here we need to check the response structure for instance
+       * response[0] has response[0].data.data array for the records
+       * response[1] has response[0].data.records array for the records
+       */
     return axios_1.default.all(axiosPromises)
         .then(axios_1.default.spread((...responses) => {
+        let mergedResponses = [];
+        if (typeof responses[0].data.data !== 'undefined' && responses[0].data.data.length > 0) {
+            mergedResponses = responses[0].data.data;
+        }
+        if (typeof responses[1].data.records !== 'undefined' && responses[1].data.records.length > 0) {
+            mergedResponses = mergedResponses.concat(responses[1].data.records);
+        }
         return {
             success: true,
-            totalCount: responses[0].data.data.length + responses[1].data.records.length,
-            records: responses[0].data.data.concat(responses[1].data.records),
+            totalCount: mergedResponses.length,
+            records: mergedResponses,
             status: 200
         };
     }))
@@ -57,15 +71,14 @@ const _handleSearch = (queryString) => __awaiter(void 0, void 0, void 0, functio
         return response;
     });
 });
-exports._handleSearch = _handleSearch;
+exports._search = _search;
 /**
  *
  * @param url
  * @param params
  * @return Promise<any>
- * @todo create type for response api.
  */
-const getData = (url, params) => __awaiter(void 0, void 0, void 0, function* () {
+const getPromise = (url, params) => __awaiter(void 0, void 0, void 0, function* () {
     return yield axios_1.default.get(`${url}/search`, {
         params
     });

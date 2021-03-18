@@ -6,7 +6,7 @@ const handleSearch = (request, response) => {
     // Holds value of the query param 'search query'.
     const searchQuery = typeof request.query !== 'undefined' ? request.query.q : null;
     if (searchQuery !== null) {
-        searchController_1._handleSearch(searchQuery).then((res) => {
+        searchController_1._search(searchQuery).then((res) => {
             if (res && typeof res.name !== 'undefined' && res.name === 'Error') {
                 const errorResponse = {
                     success: false,
@@ -20,7 +20,7 @@ const handleSearch = (request, response) => {
                 const jsonResponse = {
                     success: true,
                     totalCount: res.totalCount,
-                    records: res.records,
+                    records: res.records.length > 0 ? res.records : null,
                     status: 200
                 };
                 response.status(200);
