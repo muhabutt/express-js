@@ -1,6 +1,9 @@
 ## Getting started instructions.
-- Due to the size of this project, docker is not used, just install lastest node. because only node 
+- Due to the size of this project, docker is not used, just install the latest node. because only node 
 js is used in this project.
+  
+- Husky is used to pre commit actions, for instance if you want to pre commit actions use husky for it.
+
   
 # Prerequisites
 - npm / node.
