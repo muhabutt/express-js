@@ -1,8 +1,10 @@
-## Local development instructions.
-
+## Getting started instructions.
+- Due to the size of this project, docker is not used, just install lastest node. because only node 
+js is used in this project.
+  
 # Prerequisites
-- Install latest npm / node.
-- Install husky (Read more: https://typicode.github.io/husky/#/)  
+- npm / node.
+- husky (Read more: https://typicode.github.io/husky/#/)  
 - project dependencies.
     - axios
     - express
@@ -14,9 +16,8 @@
     - husky ( Read more: https://typicode.github.io/husky/#/ )
   
 ````
-- npm install husky --save-dev
+- run npm install
 - npx husky install
-- run npm install. package-lock.json file is gitignored.
 - in order to run the server for development.
     - npm run start:dev
 - for production build run.
