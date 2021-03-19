@@ -10,3 +10,5 @@ export const getUrls = (): Array<URL> => {
     { fina: 'https://api.finna.fi/api/v1' }
   ]
 }
+
+
