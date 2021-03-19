@@ -16,7 +16,7 @@ export const _search = async (queryString: string): Promise<RESPONSE> => {
     if (url.hel) {
       params = {
         format: 'json',
-        q: queryString
+        q: decodeURIComponent(queryString)
       }
       axiosPromises.push(getPromise(url.hel, params))
     } else if (url.fina) {
