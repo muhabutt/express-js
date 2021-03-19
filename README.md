@@ -15,6 +15,7 @@ js is used in this project.
     - prettier
     - husky ( Read more: https://typicode.github.io/husky/#/ )
   
+
 ````
 - run npm install
 - npx husky install
