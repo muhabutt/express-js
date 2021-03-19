@@ -4,6 +4,7 @@ js is used in this project.
   
 - Husky is used to pre commit actions, for instance if you want to pre commit actions use husky for it.
 
+- access the front end app by http://127.0.0.1:3000/. you can change the port from index.js file inside root folder.
   
 # Prerequisites
 - npm / node.
