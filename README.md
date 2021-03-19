@@ -22,7 +22,6 @@ js is used in this project.
 
 ````
 - run npm install
-- npx husky install
 - in order to run the server for development.
     - npm run start:dev
 - for production build run.
